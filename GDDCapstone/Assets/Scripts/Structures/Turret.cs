@@ -3,29 +3,32 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
-using static UnityEngine.GraphicsBuffer;
 
 public class Turret : MonoBehaviour
 {
-    private bool isSpawned = false;
+    public int health;
+    public float atkSpeed;
+    public float maxRange;
+    public float minRange;
+    public int damage;
+    public int cost;
+    public GameObject structure;
+    public Sprite icon;
+    public int tileSize;
+    public GameObject projectile;
+    public float projectileSpeed;
+
+
     private bool inRange = false;
 
-    [SerializeField]
-    GameObject bullet;
-
-    [SerializeField]
-    GameObject myself;
-
-    private GameObject thisBullet;
-
-    private int cooldown = 2;
     private GameObject enemy;
     private Vector3 direction;
     private float angle;
-    private float maxDistance;
     private GameObject closest;
     private GameObject[] enemies;
     private float distance;
+
+    GameObject myTile;
 
     private PlayerControls controls;
     private InputAction place;
@@ -36,6 +39,7 @@ public class Turret : MonoBehaviour
     private Timer fireSpeed;
 
     GameEvent bulletFired = new GameEvent();
+    GameEvent destroyed = new GameEvent();
     /// <summary>
     /// Runs When this object is enabled
     /// </summary>
@@ -68,22 +72,17 @@ public class Turret : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
-        EventManager.AddListener(GameplayEvent.BulletSpawned, BulletSpawned);
+        EventManager.AddListener(GameplayEvent.EnemyAttack, EnemyAttack);
         EventManager.AddInvoker(GameplayEvent.BulletFired, bulletFired);
+        EventManager.AddInvoker(GameplayEvent.StructureDestroyed, destroyed);
         fireSpeed = gameObject.AddComponent<Timer>();
-        fireSpeed.Duration = cooldown;
+        fireSpeed.Duration = atkSpeed;
         fireSpeed.Run();
     }
 
     private void Update()
     {
-        if (place.triggered)
-        {
-            isSpawned = true;
-        }
 
-        if (isSpawned == true)
-        {
             enemy = FindClosestEnemy();
             if (enemy != null)
             {
@@ -92,55 +91,75 @@ public class Turret : MonoBehaviour
                 transform.rotation = Quaternion.Euler(0, 0, angle);
                 if (inRange == true && fireSpeed.Finished)
                 {
-                    thisBullet = Instantiate(bullet, transform.position, Quaternion.identity);
+                    GameObject thisProjectile = Instantiate(projectile, transform.position, Quaternion.identity);
+                    thisProjectile.GetComponent<Bullet>().Initialize(damage, projectileSpeed, projectile);
+                    bulletFired.AddData(GameplayEventData.Bullet, thisProjectile);
+                    bulletFired.AddData(GameplayEventData.Enemy, enemy);
+                    bulletFired.Invoke(bulletFired.Data);
                     fireSpeed.Run();
                 }
             }
 
-        }
-
-        
-
-        if (isSpawned == false)
-        {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mousePos.z = 0f;
-            transform.position = mousePos;
-        }
-    }
-
-    private void BulletSpawned(Dictionary<System.Enum, object> data)
-    {
-        data.TryGetValue(GameplayEventData.Bullet, out object output);
-        GameObject bullet = (GameObject)output;
-
-        if (thisBullet == bullet)
-        {
-            bulletFired.AddData(GameplayEventData.Bullet, bullet);
-            bulletFired.AddData(GameplayEventData.Enemy, enemy);
-            bulletFired.Invoke(bulletFired.Data);
-        }
     }
 
     private GameObject FindClosestEnemy()
     {
         enemies = GameObject.FindGameObjectsWithTag(enemyTag);
         closest = null;
-        maxDistance = 7f;
+        maxRange = 7f;
 
         foreach (GameObject enemy in enemies)
         {
             distance = Vector3.Distance(gameObject.transform.position, enemy.transform.position);
 
-            if (distance <= maxDistance)
+            if (distance <= maxRange)
             {
                 inRange = true;
-                maxDistance = distance;
+                maxRange = distance;
                 closest = enemy;
             }
         }
 
         return closest;
+    }
+
+    private void EnemyAttack(Dictionary<System.Enum, object> data)
+    {
+        data.TryGetValue(GameplayEventData.Structure, out object output);
+        GameObject structure = (GameObject)output;
+
+        data.TryGetValue(GameplayEventData.Damage, out output);
+        int damage = (int)output;
+
+        if (structure == gameObject)
+        {
+            health = health - damage;
+
+            if (health <= 0)
+            {
+                destroyed.AddData(GameplayEventData.Structure, gameObject);
+                destroyed.Invoke(destroyed.Data);
+                myTile.GetComponent<Node>().ResetMe();
+                Destroy(gameObject);
+            }
+        }
+
+
+    }
+
+    public void Initialize(StructureButton structureButton, GameObject tile)
+    {
+        health = structureButton.Health;
+        atkSpeed = structureButton.AtkSpeed;
+        maxRange = structureButton.MaxRange;
+        minRange = structureButton.MinRange;
+        damage = structureButton.Damage;
+        cost = structureButton.Cost;
+        structure = structureButton.Structure;
+        tileSize = structureButton.TileSize;
+        projectile = structureButton.Projectile;
+        projectileSpeed = structureButton.ProjectileSpeed;
+        myTile = tile;
     }
 
 }

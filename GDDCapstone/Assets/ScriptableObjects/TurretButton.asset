@@ -12,7 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70f0dc40a5cd5c34899f864fc4e1c426, type: 3}
   m_Name: TurretButton
   m_EditorClassIdentifier: 
-  Name: Base Turret
+  PurchaseButtonEnum: 0
   Cost: 10
-  Icon: {fileID: 1598061926268173818, guid: a90dcabe22037224792bbffb41e0977e, type: 3}
-  Structure: {fileID: 7039422258078349019, guid: 37d7a5d7bd064e742b952d479fc9c5b9, type: 3}
+  Icon: {fileID: 2373183141213679312, guid: 2dd2ccaf94d23ce40861c2c96df7ba87, type: 3}
+  Structure: {fileID: 660548124698388580, guid: e76206554f242b2478c092596d5cc99b, type: 3}
+  Health: 20
+  Damage: 2
+  TileSize: 4
+  AtkSpeed: 2
+  MaxRange: 7
+  MinRange: 0
+  Projectile: {fileID: 7712313571027599039, guid: 4570411862fb5324f8f1f3fe66fbdd4d, type: 3}
+  Image: {fileID: 660548124698388580, guid: 7fea431cc709c1c4dbdcb7c829109902, type: 3}
+  ProjectileSpeed: 5

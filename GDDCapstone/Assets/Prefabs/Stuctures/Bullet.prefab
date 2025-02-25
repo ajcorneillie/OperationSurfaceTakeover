@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.7898079, w: 0.61335427}
   m_LocalPosition: {x: -1.4274, y: 1.4764, z: 0}
-  m_LocalScale: {x: 0.2523974, y: 0.89410686, z: 0.69359}
+  m_LocalScale: {x: 1, y: 1, z: 0.69359}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -77,10 +77,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1355254243
+  m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3449505629955183640, guid: f5fc8287dc4b9c44484e35f363c94708, type: 3}
+  m_Sprite: {fileID: -5515851078783427038, guid: d8545be4b7722cd459e92ad45d7b4066, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -115,7 +115,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e57535b1bae874429ce4d90515b704f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myTarget: {fileID: 0}
   myself: {fileID: 7712313571027599039}
+  hasTarget: 0
+  direction: {x: 0, y: 0}
+  isActive: 0
 --- !u!50 &3126751048345016990
 Rigidbody2D:
   serializedVersion: 5
@@ -181,7 +185,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.28, y: 0.32}
+    oldSize: {x: 0.3125, y: 0.3125}
     newSize: {x: 1.28, y: 0.32}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

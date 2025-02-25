@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - Enemy
+  - Structure
+  - Base
   layers:
   - Default
   - TransparentFX
@@ -13,7 +15,7 @@ TagManager:
   - Water
   - UI
   - Tile
-  - 
+  - Enemy
   - 
   - 
   - 
@@ -39,9 +41,6 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: UI
-    uniqueID: 3588469629
-    locked: 0
   - name: Tiles
     uniqueID: 1045158695
     locked: 0
@@ -56,6 +55,9 @@ TagManager:
     locked: 0
   - name: Projectile
     uniqueID: 2939713053
+    locked: 0
+  - name: UI
+    uniqueID: 3588469629
     locked: 0
   m_RenderingLayers:
   - Default

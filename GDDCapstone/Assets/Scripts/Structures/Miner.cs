@@ -32,12 +32,12 @@ public class Miner : MonoBehaviour
     {
         if (isIdle == false)
         {
-            if (isFull == false)
+            if (isFull == false && Mine != null)
             {
                 transform.position = Vector3.MoveTowards(transform.position, Mine.transform.position, moveSpeed * Time.deltaTime);
             }
 
-            if (isFull == true)
+            if (isFull == true && Base != null)
             {
                 transform.position = Vector3.MoveTowards(transform.position, Base.transform.position, moveSpeed * Time.deltaTime);
             }

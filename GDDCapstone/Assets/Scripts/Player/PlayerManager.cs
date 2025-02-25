@@ -27,8 +27,6 @@ public class PlayerManager : MonoBehaviour
     public float radius = 5f;
     private float angle = 0f;
 
-    bool isSpawning = false;
-
     public int money = 100;
     /// <summary>
     /// Unity Input Actions
@@ -38,6 +36,7 @@ public class PlayerManager : MonoBehaviour
     private InputAction mouseAim;
 
     GameEvent purchaseAttempt = new GameEvent();
+    GameEvent purchaseAttemptWall = new GameEvent();
 
     /// <summary>
     /// Getter and Setter for move speed
@@ -89,9 +88,11 @@ public class PlayerManager : MonoBehaviour
         playerMove = controls.Player.Movement;
         mouseAim = controls.Player.MouseAim;
         EventManager.AddListener(UIEvent.StructurePurchaseAttemptToPlayer, PurchaseEvent);
+        EventManager.AddListener(UIEvent.StructurePurchaseAttemptToPlayerWall, PurchaseEventWall);
         EventManager.AddListener(UIEvent.StructurePurchaseSuccess, PurchaseSuccess);
         EventManager.AddListener(GameplayEvent.GoldDropoff, GoldIncrease);
         EventManager.AddInvoker(UIEvent.StructurePurchaseAttempt, purchaseAttempt);
+        EventManager.AddInvoker(UIEvent.StructurePurchaseAttemptWall, purchaseAttemptWall);
         money = 200;
     }
 
@@ -161,18 +162,40 @@ public class PlayerManager : MonoBehaviour
 
     void PurchaseEvent(Dictionary<System.Enum, object> data)
     {
-        data.TryGetValue(UIEventData.Structure, out object output);
-        GameObject structure = (GameObject)output;
+        data.TryGetValue(UIEventData.StructureScriptable, out object output);
+        StructureButton structure = (StructureButton)output;
 
-        data.TryGetValue(UIEventData.Cost, out output);
-        int cost = (int)output;
+        if (structure!= null)
+        {
+            int cost = structure.Cost;
 
-        int playerMoney = money;
+            int playerMoney = money;
 
-        purchaseAttempt.AddData(UIEventData.Structure, structure);
-        purchaseAttempt.AddData(UIEventData.Cost, cost);
-        purchaseAttempt.AddData(UIEventData.PlayerMoney, playerMoney);
-        purchaseAttempt.Invoke(purchaseAttempt.Data);
+            purchaseAttempt.AddData(UIEventData.StructureScriptable, structure);
+            purchaseAttempt.AddData(UIEventData.Cost, cost);
+            purchaseAttempt.AddData(UIEventData.PlayerMoney, playerMoney);
+            purchaseAttempt.Invoke(purchaseAttempt.Data);
+        }
+
+    }
+
+    void PurchaseEventWall(Dictionary<System.Enum, object> data)
+    {
+        data.TryGetValue(UIEventData.WallScriptable, out object output);
+        WallButton wall = (WallButton)output;
+
+        if (wall!= null)
+        {
+            int cost = wall.Cost;
+
+            int playerMoney = money;
+
+            purchaseAttemptWall.AddData(UIEventData.WallScriptable, wall);
+            purchaseAttemptWall.AddData(UIEventData.Cost, cost);
+            purchaseAttemptWall.AddData(UIEventData.PlayerMoney, playerMoney);
+            purchaseAttemptWall.Invoke(purchaseAttemptWall.Data);
+        }
+
     }
 
     void PurchaseSuccess(Dictionary<System.Enum, object> data)

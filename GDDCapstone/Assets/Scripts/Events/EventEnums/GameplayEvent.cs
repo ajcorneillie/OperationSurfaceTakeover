@@ -6,6 +6,9 @@ public enum GameplayEvent
     GoldDropoff,
     BulletManage,
     SelectBullet,
+    EnemyAttack,
+    StructureDestroyed,
+    PlaceStructure,
 
 }
 
@@ -16,6 +19,7 @@ public enum GameplayEventData
     Bullet,
     Gold,
     Turret,
-
-
+    Structure,
+    Tile,
+    TilePos,
 }

@@ -5,25 +5,29 @@ using UnityEngine.InputSystem;
 
 public class Bullet : MonoBehaviour
 {
-    float speed = 5f;
-    int damage = 5;
-    public GameObject myTarget;
-    public GameObject myself;
-    public bool hasTarget = false;
-    public Vector2 direction;
+    float speed;
+    int damage;
+    private GameObject myTarget;
+    private bool hasTarget = false;
+    private Vector2 direction;
+    GameObject Projectile;
 
     public bool isActive = false;
 
     GameEvent damageEnemy = new GameEvent();
     GameEvent bulletSpawned = new GameEvent();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    private void Awake()
+    {
+        EventManager.AddListener(GameplayEvent.BulletFired, SetTarget);
+    }
     void Start()
     {
-        EventManager.AddInvoker(GameplayEvent.BulletSpawned, bulletSpawned);
         EventManager.AddInvoker(GameplayEvent.DamageEnemy, damageEnemy);
-        EventManager.AddListener(GameplayEvent.BulletFired, SetTarget);
 
-        bulletSpawned.AddData(GameplayEventData.Bullet, myself);
+
+        bulletSpawned.AddData(GameplayEventData.Bullet, Projectile);
         bulletSpawned.Invoke(bulletSpawned.Data);
 
     }
@@ -66,7 +70,7 @@ public class Bullet : MonoBehaviour
         data.TryGetValue(GameplayEventData.Bullet, out output);
         GameObject bullet = (GameObject)output;
 
-        if (myself == bullet)
+        if (bullet == gameObject)
         {
             if (target != null)
             {
@@ -78,5 +82,12 @@ public class Bullet : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+    }
+
+    public void Initialize(int Damage, float ProjectileSpeed, GameObject projectile)
+    {
+        damage = Damage;
+        speed = ProjectileSpeed;
+        Projectile = projectile;
     }
 }
