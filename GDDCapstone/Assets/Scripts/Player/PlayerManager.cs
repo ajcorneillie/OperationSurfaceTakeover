@@ -5,7 +5,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
-using static UnityEditor.Rendering.CameraUI;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -27,7 +26,7 @@ public class PlayerManager : MonoBehaviour
     public float radius = 5f;
     private float angle = 0f;
 
-    public int money = 100;
+    public int money;
     /// <summary>
     /// Unity Input Actions
     /// </summary>
@@ -37,6 +36,7 @@ public class PlayerManager : MonoBehaviour
 
     GameEvent purchaseAttempt = new GameEvent();
     GameEvent purchaseAttemptWall = new GameEvent();
+    GameEvent currentGold = new GameEvent();
 
     /// <summary>
     /// Getter and Setter for move speed
@@ -89,11 +89,12 @@ public class PlayerManager : MonoBehaviour
         mouseAim = controls.Player.MouseAim;
         EventManager.AddListener(UIEvent.StructurePurchaseAttemptToPlayer, PurchaseEvent);
         EventManager.AddListener(UIEvent.StructurePurchaseAttemptToPlayerWall, PurchaseEventWall);
-        EventManager.AddListener(UIEvent.StructurePurchaseSuccess, PurchaseSuccess);
+        EventManager.AddListener(GameplayEvent.GoldSpent, PurchaseSuccess);
         EventManager.AddListener(GameplayEvent.GoldDropoff, GoldIncrease);
         EventManager.AddInvoker(UIEvent.StructurePurchaseAttempt, purchaseAttempt);
         EventManager.AddInvoker(UIEvent.StructurePurchaseAttemptWall, purchaseAttemptWall);
-        money = 200;
+        EventManager.AddInvoker(GameplayEvent.CurrentGold, currentGold);
+
     }
 
     /// <summary>
@@ -200,10 +201,14 @@ public class PlayerManager : MonoBehaviour
 
     void PurchaseSuccess(Dictionary<System.Enum, object> data)
     {
-        data.TryGetValue(UIEventData.Cost, out object output);
+        data.TryGetValue(GameplayEventData.Gold, out object output);
         int cost = (int)output;
 
         money = money - cost;
+
+        currentGold.AddData(GameplayEventData.Gold, money);
+        currentGold.AddData(GameplayEventData.Cost, cost);
+        currentGold.Invoke(currentGold.Data);
     }
 
     void GoldIncrease(Dictionary<System.Enum, object> data)

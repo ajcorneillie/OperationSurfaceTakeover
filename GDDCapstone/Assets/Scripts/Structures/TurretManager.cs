@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class TurretManager : MonoBehaviour
 {
+
+    GameObject image;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -16,14 +19,15 @@ public class TurretManager : MonoBehaviour
     }
 
     void PurchaseSuccess(Dictionary<System.Enum, object> data)
-    {
+    {   
         data.TryGetValue(UIEventData.StructureScriptable, out object output);
         StructureButton structure = (StructureButton)output;
 
         data.TryGetValue(UIEventData.WallScriptable, out output);
         WallButton wall = (WallButton)output;
 
-        GameObject image;
+        Destroy(image);
+        
 
         if (structure != null)
         {

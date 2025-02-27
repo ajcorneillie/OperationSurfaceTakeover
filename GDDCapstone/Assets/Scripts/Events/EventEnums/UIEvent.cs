@@ -6,6 +6,8 @@ public enum UIEvent
     StructurePurchaseSuccess,
     StructurePurchaseFailure,
     StructurePurchaseAttemptToPlayerWall,
+    LivesUpdate,
+    MoneyUpdate,
 
 }
 
@@ -15,7 +17,9 @@ public enum UIEventData
     Cost,
     PlayerMoney,
     StructureScriptable,
-    WallScriptable
+    WallScriptable,
+    Lives,
+    Money,
 
 
 }

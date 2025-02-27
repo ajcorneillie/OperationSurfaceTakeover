@@ -38,8 +38,11 @@ public class Turret : MonoBehaviour
 
     private Timer fireSpeed;
 
+    TurretButtonEnum turretButtonEnum;
+
     GameEvent bulletFired = new GameEvent();
     GameEvent destroyed = new GameEvent();
+    GameEvent moneyUpdate = new GameEvent();
     /// <summary>
     /// Runs When this object is enabled
     /// </summary>
@@ -75,6 +78,11 @@ public class Turret : MonoBehaviour
         EventManager.AddListener(GameplayEvent.EnemyAttack, EnemyAttack);
         EventManager.AddInvoker(GameplayEvent.BulletFired, bulletFired);
         EventManager.AddInvoker(GameplayEvent.StructureDestroyed, destroyed);
+        EventManager.AddInvoker(GameplayEvent.GoldSpent, moneyUpdate);
+
+        moneyUpdate.AddData(GameplayEventData.Gold, cost);
+        moneyUpdate.Invoke(moneyUpdate.Data);
+
         fireSpeed = gameObject.AddComponent<Timer>();
         fireSpeed.Duration = atkSpeed;
         fireSpeed.Run();
@@ -91,12 +99,25 @@ public class Turret : MonoBehaviour
                 transform.rotation = Quaternion.Euler(0, 0, angle);
                 if (inRange == true && fireSpeed.Finished)
                 {
-                    GameObject thisProjectile = Instantiate(projectile, transform.position, Quaternion.identity);
-                    thisProjectile.GetComponent<Bullet>().Initialize(damage, projectileSpeed, projectile);
-                    bulletFired.AddData(GameplayEventData.Bullet, thisProjectile);
-                    bulletFired.AddData(GameplayEventData.Enemy, enemy);
-                    bulletFired.Invoke(bulletFired.Data);
-                    fireSpeed.Run();
+                    if (turretButtonEnum == TurretButtonEnum.Turret || turretButtonEnum == TurretButtonEnum.MachineGunTurret)
+                    {
+                        GameObject thisProjectile = Instantiate(projectile, transform.position, Quaternion.identity);
+                        thisProjectile.GetComponent<Bullet>().Initialize(damage, projectileSpeed, projectile);
+                        bulletFired.AddData(GameplayEventData.Bullet, thisProjectile);
+                        bulletFired.AddData(GameplayEventData.Enemy, enemy);
+                        bulletFired.Invoke(bulletFired.Data);
+                        fireSpeed.Run();
+                    }
+
+                    if (turretButtonEnum == TurretButtonEnum.FlameThrower)
+                    {
+                        Quaternion rotation = transform.rotation * Quaternion.Euler(0, 0, 90);
+                        
+                        GameObject thisProjectile = Instantiate(projectile, transform.position, rotation);
+                        thisProjectile.GetComponent<Cone>().Initialize(damage);
+                        fireSpeed.Run();
+                    }
+                    
                 }
             }
 
@@ -160,6 +181,12 @@ public class Turret : MonoBehaviour
         projectile = structureButton.Projectile;
         projectileSpeed = structureButton.ProjectileSpeed;
         myTile = tile;
+        turretButtonEnum = structureButton.PurchaseButtonEnum;
+        
+
+        fireSpeed = gameObject.AddComponent<Timer>();
+        fireSpeed.Duration = atkSpeed;
+        fireSpeed.Run();
     }
 
 }

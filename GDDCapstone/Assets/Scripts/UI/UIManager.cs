@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -6,13 +7,29 @@ public class UIManager : MonoBehaviour
     GameObject structure;
     Sprite icon;
 
+    int money = 0;
+
+    [SerializeField]
+    TextMeshProUGUI moneyText;
+    [SerializeField]
+    TextMeshProUGUI healthText;
+
+
     [SerializeField]
     StructureButton turret;
+    [SerializeField]
+    StructureButton machineGunTurret;
+    [SerializeField]
+    StructureButton flameThrower;
     [SerializeField]
     WallButton wall;
 
     [SerializeField]
     GameObject turretObj;
+    [SerializeField]
+    GameObject machineGunTurretObj;
+    [SerializeField]
+    GameObject flameThrowerObj;
     [SerializeField]
     GameObject wallObj;
 
@@ -27,21 +44,32 @@ public class UIManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        moneyText.text = $"Uranium: {0}";
+        healthText.text = $"Lives: {10}";
 
         EventManager.AddListener(UIEvent.StructurePurchaseAttempt, PurchaseEvent);
         EventManager.AddListener(UIEvent.StructurePurchaseAttemptWall, PurchaseEvent);
+        EventManager.AddListener(UIEvent.LivesUpdate, UpdateLives);
+        EventManager.AddListener(GameplayEvent.GoldSpent, MoneySpent);
+        EventManager.AddListener(GameplayEvent.GoldDropoff, UpdateMoney);
         EventManager.AddInvoker(UIEvent.StructurePurchaseSuccess, purchaseSuccess);
         EventManager.AddInvoker(UIEvent.StructurePurchaseFailure, purchaseFailure);
 
         structureButtonsScriptables.Add(turret);
+        structureButtonsScriptables.Add(machineGunTurret);
+        structureButtonsScriptables.Add(flameThrower);
         wallButton.Add(wall);
 
         structureButtons.Add(turretObj);
+        structureButtons.Add(machineGunTurretObj);
+        structureButtons.Add(flameThrowerObj);
         wallButtons.Add(wallObj);
 
 
 
-        structureButtons[0].GetComponent<StructureButtons>().purchaseButtonEnum = PurchaseButtonEnum.Turret;
+        structureButtons[0].GetComponent<StructureButtons>().purchaseButtonEnum = TurretButtonEnum.Turret;
+        structureButtons[1].GetComponent<StructureButtons>().purchaseButtonEnum = TurretButtonEnum.MachineGunTurret;
+        structureButtons[2].GetComponent<StructureButtons>().purchaseButtonEnum = TurretButtonEnum.FlameThrower;
 
 
         wallButtons[0].GetComponent<StructureButtons>().wallButtonEnum = WallButtonEnum.BaseWall;
@@ -56,6 +84,7 @@ public class UIManager : MonoBehaviour
                 structureButtons[index].GetComponent<StructureButtons>().Initialize(scriptable);
                 
             }
+            index++;
         }
 
         index = 0;
@@ -67,6 +96,7 @@ public class UIManager : MonoBehaviour
                 wallButtons[index].GetComponent<StructureButtons>().Initialize2(script);
 
             }
+            index++;
         }
 
     }
@@ -112,4 +142,32 @@ public class UIManager : MonoBehaviour
             purchaseSuccess.Invoke(purchaseSuccess.Data);
         }
     }
+
+    void UpdateLives(Dictionary<System.Enum, object> data)
+    {
+        data.TryGetValue(UIEventData.Lives, out object output);
+        int lives = (int)output;
+
+        healthText.text = $"Lives: {lives}";
+    }
+
+    void UpdateMoney(Dictionary<System.Enum, object> data)
+    {
+        data.TryGetValue(GameplayEventData.Gold, out object output);
+        int moneyGathered = (int)output;
+
+        money = money + moneyGathered;
+
+        moneyText.text = $"Uranium: {money}";
+    }
+    void MoneySpent(Dictionary<System.Enum, object> data)
+    {
+        data.TryGetValue(GameplayEventData.Gold, out object output);
+        int moneySpent = (int)output;
+
+        money = money - moneySpent;
+
+        moneyText.text = $"Uranium: {money}";
+    }
+
 }

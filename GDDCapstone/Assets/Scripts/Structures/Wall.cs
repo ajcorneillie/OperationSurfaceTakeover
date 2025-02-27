@@ -17,6 +17,7 @@ public class Wall : MonoBehaviour
     private InputAction cancelPlace;
 
     GameEvent destroyed = new GameEvent();
+    GameEvent moneyUpdate = new GameEvent();
 
     GameObject myTile;
     /// <summary>
@@ -53,6 +54,12 @@ public class Wall : MonoBehaviour
     {
         EventManager.AddListener(GameplayEvent.EnemyAttack, EnemyAttack);
         EventManager.AddInvoker(GameplayEvent.StructureDestroyed, destroyed);
+
+        EventManager.AddInvoker(GameplayEvent.GoldSpent, moneyUpdate);
+
+        moneyUpdate.AddData(GameplayEventData.Gold, cost);
+        moneyUpdate.Invoke(moneyUpdate.Data);
+
     }
 
     private void Update()

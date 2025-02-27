@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Structure
   - Base
+  - Mouse
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - UI
   - Tile
   - Enemy
-  - 
+  - Mouse
   - 
   - 
   - 
@@ -56,8 +57,14 @@ TagManager:
   - name: Projectile
     uniqueID: 2939713053
     locked: 0
+  - name: UI2
+    uniqueID: 2665797019
+    locked: 0
   - name: UI
     uniqueID: 3588469629
+    locked: 0
+  - name: Mouse
+    uniqueID: 1081945253
     locked: 0
   m_RenderingLayers:
   - Default

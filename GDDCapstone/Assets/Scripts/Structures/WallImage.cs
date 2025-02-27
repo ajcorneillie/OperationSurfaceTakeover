@@ -40,6 +40,7 @@ public class WallImage : MonoBehaviour
         place = controls.Player.Place;
         cancelPlace = controls.Player.CancelPlace;
         EventManager.AddListener(GameplayEvent.PlaceStructure, PlaceStructure);
+        EventManager.AddListener(GameplayEvent.CurrentGold, CurrentGold);
     }
 
     // Update is called once per frame
@@ -70,7 +71,21 @@ public class WallImage : MonoBehaviour
 
         var theStructure = Instantiate(structure, location, Quaternion.identity);
         theStructure.GetComponent<Wall>().Initialize(structureButtonScript, tile);
-
-        Destroy(gameObject);
     }
+
+    private void CurrentGold(Dictionary<System.Enum, object> data)
+    {
+        data.TryGetValue(GameplayEventData.Gold, out object output);
+        int gold = (int)output;
+
+        data.TryGetValue(GameplayEventData.Cost, out output);
+        int cost = (int)output;
+
+        if (gold < cost)
+        {
+            Destroy(gameObject);
+        }
+
+    }
+
 }

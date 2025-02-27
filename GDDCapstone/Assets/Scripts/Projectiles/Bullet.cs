@@ -70,18 +70,21 @@ public class Bullet : MonoBehaviour
         data.TryGetValue(GameplayEventData.Bullet, out output);
         GameObject bullet = (GameObject)output;
 
-        if (bullet == gameObject)
-        {
-            if (target != null)
+
+
+
+            if (bullet == gameObject)
             {
-                myTarget = target;
-                hasTarget = true;
+                if (target != null)
+                {
+                    myTarget = target;
+                    hasTarget = true;
+                }
+                if (target == null)
+                {
+                    Destroy(gameObject);
+                }
             }
-            if (target == null)
-            {
-                Destroy(gameObject);
-            }
-        }
     }
 
     public void Initialize(int Damage, float ProjectileSpeed, GameObject projectile)

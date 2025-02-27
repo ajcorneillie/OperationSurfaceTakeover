@@ -9,7 +9,7 @@ public class Miner : MonoBehaviour
     bool isIdle = false;
     int mineSpeed = 3;
     float moveSpeed = 3f;
-    int goldStorage = 3000;
+    int goldStorage = 50;
 
     [SerializeField]
     GameObject Base;
@@ -55,6 +55,8 @@ public class Miner : MonoBehaviour
         {
             goldDropoff.AddData(GameplayEventData.Gold, goldStorage);
             goldDropoff.Invoke(goldDropoff.Data);
+
+
             isFull = false;
         }
         if (collision.gameObject == Mine && isFull == false)

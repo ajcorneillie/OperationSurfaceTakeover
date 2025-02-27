@@ -9,6 +9,8 @@ public enum GameplayEvent
     EnemyAttack,
     StructureDestroyed,
     PlaceStructure,
+    GoldSpent,
+    CurrentGold,
 
 }
 
@@ -22,4 +24,7 @@ public enum GameplayEventData
     Structure,
     Tile,
     TilePos,
+    Cost,
+
+
 }

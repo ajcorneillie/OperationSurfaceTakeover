@@ -7,14 +7,14 @@ public class NodeManager : MonoBehaviour
     [SerializeField]
     Grid grid;
 
-    int sizeX = 50;
-    int sizeY = 50;
+    int sizeX = 75;
+    int sizeY = 75;
 
     [SerializeField]
     Node tile;
 
     [SerializeField]
-    Transform camera;
+    Transform player;
 
 
 
@@ -22,9 +22,9 @@ public class NodeManager : MonoBehaviour
 
     private void Awake()
     {
-        for (int x = 0; x < sizeX; x++)
+        for (int x = -75; x < sizeX; x++)
         {
-            for (int y = 0; y < sizeY; y++)
+            for (int y = -75; y < sizeY; y++)
             {
                 var myPosition = Instantiate(tile, new Vector3(x, y), Quaternion.identity);
                 myPosition.name = $"Tile {x} {y}";
@@ -32,7 +32,6 @@ public class NodeManager : MonoBehaviour
 
             }
         }
-        transform.position = camera.transform.position;
     }
 
 

@@ -1,66 +1,25 @@
 using Unity.VisualScripting;
 using UnityEditor;
-using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
-using UnityEngine.WSA;
 
 public class Node : MonoBehaviour
 {
     [SerializeField]
     GameObject highlight;
 
-    private PlayerControls controls;
-    private InputAction place;
-    private InputAction cancelPlace;
+    StructureButtons structureButtons;
 
     bool isEmpty = true;
 
     GameEvent placeStructure = new GameEvent();
-
-    /// <summary>
-    /// Runs When this object is enabled
-    /// </summary>
-    private void OnEnable()
-    {
-        controls.Enable();
-        place.Enable();
-        cancelPlace.Enable();
-    }
-
-    /// <summary>
-    /// Runs When this object is disabled
-    /// </summary>
-    private void OnDisable()
-    {
-        controls.Disable();
-        place.Disable();
-        cancelPlace.Disable();
-    }
-
-    private void Awake()
-    {
-        controls = new PlayerControls();
-        place = controls.Player.Place;
-        cancelPlace = controls.Player.CancelPlace;
-    }
     private void Start()
     {
+        highlight.SetActive(false);
         EventManager.AddInvoker(GameplayEvent.PlaceStructure, placeStructure);
-    }
-
-
-    private void OnMouseDown()
-    {
-        if (place.triggered && isEmpty == true)
-        {
-            placeStructure.AddData(GameplayEventData.TilePos, transform.position);
-            placeStructure.AddData(GameplayEventData.Tile, gameObject);
-            placeStructure.Invoke(placeStructure.Data);
-            isEmpty = false;
-        }
     }
     public void Initialize(bool isfloorTile)
     {
@@ -74,15 +33,38 @@ public class Node : MonoBehaviour
         }
     }
 
-
-    private void OnMouseEnter()
+    public void OnMouseDown()
     {
-        highlight.SetActive(true);
+        if (isEmpty == true && !EventSystem.current.IsPointerOverGameObject())
+        {
+            placeStructure.AddData(GameplayEventData.TilePos, transform.position);
+            placeStructure.AddData(GameplayEventData.Tile, gameObject);
+            placeStructure.Invoke(placeStructure.Data);
+            isEmpty = false;
+
+        }
+
+
     }
 
-    private void OnMouseExit()
+    public void OnMouseEnter()
+    {
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            highlight.SetActive(true);
+        }
+        else
+        {
+            highlight.SetActive(false);
+        }
+        
+
+
+    }
+    public void OnMouseExit()
     {
         highlight.SetActive(false);
+
     }
 
     public void ResetMe()

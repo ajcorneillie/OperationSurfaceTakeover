@@ -1,11 +1,15 @@
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class StructureButtons : MonoBehaviour
 {
 
     StructureButton purchaseButton;
     WallButton wallButton;
+
+    
 
     /// <summary>
     /// Events
@@ -14,8 +18,9 @@ public class StructureButtons : MonoBehaviour
 
     GameEvent purchaseAttemptWall = new GameEvent();
 
-    [SerializeField] public PurchaseButtonEnum purchaseButtonEnum;
+    [SerializeField] public TurretButtonEnum purchaseButtonEnum;
     [SerializeField] public WallButtonEnum wallButtonEnum;
+    [SerializeField] public UnitButtonEnum unitButtonEnum;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

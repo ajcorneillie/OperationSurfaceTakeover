@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -7,6 +6,7 @@ public class Enemy : MonoBehaviour
 
     [SerializeField]
     GameObject theBase;
+
 
 
 
@@ -73,15 +73,15 @@ public class Enemy : MonoBehaviour
         data.TryGetValue(GameplayEventData.Damage, out output);
         int damage = (int)output;
 
-        if (gameObject == enemy)
-        {
-            health = health - damage;
-
-            if (health <= 0)
+            if (gameObject == enemy)
             {
-                Destroy(gameObject);
+                health = health - damage;
+
+                if (health <= 0)
+                {
+                    Destroy(gameObject);
+                }
             }
-        }
 
     }
 

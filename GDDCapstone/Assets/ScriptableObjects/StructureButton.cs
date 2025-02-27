@@ -7,7 +7,7 @@ public class StructureButton : ScriptableObject
     /// Purchase Button Variables
     /// </summary>
     /// 
-    public PurchaseButtonEnum PurchaseButtonEnum;
+    public TurretButtonEnum PurchaseButtonEnum;
     public int Cost;
     public Sprite Icon;
     public GameObject Structure;
@@ -20,5 +20,5 @@ public class StructureButton : ScriptableObject
     public GameObject Projectile;
     public GameObject Image;
     public float ProjectileSpeed;
-    public bool isWall;
+
 }

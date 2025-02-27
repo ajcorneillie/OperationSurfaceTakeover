@@ -2,5 +2,6 @@ using UnityEngine;
 
 public enum WallButtonEnum
 {
-    BaseWall
+    BaseWall,
+    None,
 }
