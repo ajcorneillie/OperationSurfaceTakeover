@@ -4,10 +4,12 @@
 TagManager:
   serializedVersion: 3
   tags:
+  - WallTile
   - Enemy
   - Structure
   - Base
   - Mouse
+  - Rally
   layers:
   - Default
   - TransparentFX
@@ -15,7 +17,7 @@ TagManager:
   - 
   - Water
   - UI
-  - Tile
+  - 
   - Enemy
   - Mouse
   - 

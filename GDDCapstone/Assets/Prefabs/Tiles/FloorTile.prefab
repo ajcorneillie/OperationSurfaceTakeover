@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 779721515566878357}
   - component: {fileID: 3485733361152283240}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 807012417666683092}
   - component: {fileID: 8810124927964214227}
   - component: {fileID: 1963562307142911427}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}

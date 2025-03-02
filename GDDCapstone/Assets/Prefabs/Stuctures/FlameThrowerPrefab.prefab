@@ -113,6 +113,7 @@ MonoBehaviour:
   tileSize: 0
   projectile: {fileID: 8595044222413125449, guid: e5391512fedd09c4daf3a42515f4bc8a, type: 3}
   projectileSpeed: 0
+  startMaxRange: 0
 --- !u!50 &4250215429561111022
 Rigidbody2D:
   serializedVersion: 5

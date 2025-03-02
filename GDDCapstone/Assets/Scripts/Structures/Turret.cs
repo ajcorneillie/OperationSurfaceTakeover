@@ -17,6 +17,7 @@ public class Turret : MonoBehaviour
     public int tileSize;
     public GameObject projectile;
     public float projectileSpeed;
+    public float startMaxRange;
 
 
     private bool inRange = false;
@@ -127,7 +128,7 @@ public class Turret : MonoBehaviour
     {
         enemies = GameObject.FindGameObjectsWithTag(enemyTag);
         closest = null;
-        maxRange = 7f;
+        maxRange = startMaxRange;
 
         foreach (GameObject enemy in enemies)
         {
@@ -172,6 +173,7 @@ public class Turret : MonoBehaviour
     {
         health = structureButton.Health;
         atkSpeed = structureButton.AtkSpeed;
+        startMaxRange = structureButton.MaxRange;
         maxRange = structureButton.MaxRange;
         minRange = structureButton.MinRange;
         damage = structureButton.Damage;

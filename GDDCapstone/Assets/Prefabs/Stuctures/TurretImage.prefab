@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2480383229799874880}
   m_Layer: 5
   m_Name: TurretImage
-  m_TagString: Structure
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -706497667
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 2373183141213679312, guid: 2dd2ccaf94d23ce40861c2c96df7ba87, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -11,6 +11,9 @@ public enum GameplayEvent
     PlaceStructure,
     GoldSpent,
     CurrentGold,
+    NodeHit,
+    WaitingRally,
+    RallyActivate,
 
 }
 
@@ -25,6 +28,7 @@ public enum GameplayEventData
     Tile,
     TilePos,
     Cost,
+    Node,
 
 
 }

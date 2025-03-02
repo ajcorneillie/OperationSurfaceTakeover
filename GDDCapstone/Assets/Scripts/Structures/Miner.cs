@@ -9,7 +9,7 @@ public class Miner : MonoBehaviour
     bool isIdle = false;
     int mineSpeed = 3;
     float moveSpeed = 3f;
-    int goldStorage = 50;
+    int goldStorage = 100;
 
     [SerializeField]
     GameObject Base;

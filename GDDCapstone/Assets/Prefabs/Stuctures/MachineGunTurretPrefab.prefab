@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1046909964531975027}
   m_Layer: 0
   m_Name: MachineGunTurretPrefab
-  m_TagString: Untagged
+  m_TagString: Structure
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -76,8 +76,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -665270195
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 1598061926268173818, guid: a90dcabe22037224792bbffb41e0977e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
