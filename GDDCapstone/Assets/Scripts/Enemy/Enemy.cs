@@ -22,7 +22,7 @@ public class Enemy : MonoBehaviour
     public GameObject node5;
 
     public GameObject rallyPoint;
-
+    int difficulty = 1;
     Sprite sprite;
 
     Camera cam;
@@ -46,6 +46,8 @@ public class Enemy : MonoBehaviour
     
     GameEvent enemyAttack = new GameEvent();
     GameEvent waitingRally = new GameEvent();
+    GameEvent enemySpawn = new GameEvent();
+    GameEvent enemyDeath = new GameEvent();
 
     List <GameObject> nodes = new List <GameObject>();
 
@@ -56,6 +58,20 @@ public class Enemy : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        enemyAttackTimer = gameObject.AddComponent<Timer>();
+        enemyAttackTimer.Duration = attackSpeed;
+        enemyAttackTimer.Run();
+        EventManager.AddInvoker(GameplayEvent.EnemyAttack, enemyAttack);
+        EventManager.AddInvoker(GameplayEvent.EnemySpawn, enemySpawn);
+        EventManager.AddInvoker(GameplayEvent.EnemyDeath, enemyDeath);
+        EventManager.AddInvoker(GameplayEvent.WaitingRally, waitingRally);
+        EventManager.AddListener(GameplayEvent.DamageEnemy, Damage);
+        EventManager.AddListener(GameplayEvent.RallyActivate, RallyActivate);
+        EventManager.AddListener(GameplayEvent.StructureDestroyed, StructureDestroyed);
+        EventManager.AddListener(GameplayEvent.NodeHit, NodeHit);
+
+        moveSpeed2 = moveSpeed;
+
         Vector3 position = cam.GetComponent<EnemyPathingManager>().node1.transform.position;
         node1 = cam.GetComponent<EnemyPathingManager>().node1;
         node2 = cam.GetComponent<EnemyPathingManager>().node2;
@@ -63,24 +79,11 @@ public class Enemy : MonoBehaviour
         node4 = cam.GetComponent<EnemyPathingManager>().node4;
         node5 = cam.GetComponent<EnemyPathingManager>().node5;
 
-        enemyAttackTimer = gameObject.AddComponent<Timer>();
-        enemyAttackTimer.Duration = attackSpeed;
-        enemyAttackTimer.Run();
-        EventManager.AddInvoker(GameplayEvent.EnemyAttack, enemyAttack);
-        EventManager.AddInvoker(GameplayEvent.WaitingRally, waitingRally);
-        EventManager.AddListener(GameplayEvent.DamageEnemy, Damage);
-        EventManager.AddListener(GameplayEvent.RallyActivate, RallyActivate);
-        EventManager.AddListener(GameplayEvent.StructureDestroyed, StructureDestroyed);
-        EventManager.AddListener(GameplayEvent.NodeHit, NodeHit);
-        attackType = Random.Range(0, 4);
+        rallyPoint = cam.GetComponent<EnemyPathingManager>().RallyPoint;
 
-        nodes.Add(node1);
-        nodes.Add(node2);
-        nodes.Add(node3);
-        nodes.Add(node4);
-        nodes.Add(node5);
+        enemySpawn.AddData(GameplayEventData.Enemy, gameObject);
+        enemySpawn.Invoke(enemySpawn.Data);
 
-        moveSpeed2 = moveSpeed;
     }
 
     // Update is called once per frame
@@ -88,7 +91,7 @@ public class Enemy : MonoBehaviour
     {
 
 
-        if (isAttacking == false && theBase != null && attackType == 0)
+        if (isAttacking == false && theBase != null && difficulty == 1)
         {
             transform.position = Vector3.MoveTowards(transform.position, theBase.transform.position, moveSpeed * Time.deltaTime);
             Vector2 direction = (theBase.transform.position - transform.position).normalized;
@@ -96,7 +99,7 @@ public class Enemy : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 0, angle);
         }
 
-        if (isAttacking == false && theBase != null && attackType == 1)
+        if (isAttacking == false && theBase != null && difficulty == 2)
         {
             structure = FindClosestStructure();
             transform.position = Vector3.MoveTowards(transform.position, structure.transform.position, moveSpeed * Time.deltaTime);
@@ -104,7 +107,7 @@ public class Enemy : MonoBehaviour
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0, 0, angle);
         }
-        if (isAttacking == false && theBase != null && attackType == 2)
+        if (isAttacking == false && theBase != null && difficulty == 3)
         {
             if (nodeIndex <= 4)
             {
@@ -122,7 +125,7 @@ public class Enemy : MonoBehaviour
             }
 
         }
-        if (isAttacking == false && theBase != null && attackType == 3)
+        if (isAttacking == false && theBase != null && difficulty == 4)
         {
             if (atRally == false)
             {
@@ -222,6 +225,8 @@ public class Enemy : MonoBehaviour
 
                 if (health <= 0)
                 {
+                    enemyDeath.AddData(GameplayEventData.Enemy, gameObject);
+                    enemyDeath.Invoke(enemyDeath.Data);
                     Destroy(gameObject);
                 }
             }
@@ -239,7 +244,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void Initialize(GameObject thatBase, EnemyScriptable scriptable, Camera camera, GameObject rally)
+    public void Initialize(GameObject thatBase, EnemyScriptable scriptable, Camera camera, GameObject rally, GameObject node1, GameObject node2, GameObject node3, GameObject node4, GameObject node5)
     {
         theBase = thatBase;
 
@@ -251,6 +256,7 @@ public class Enemy : MonoBehaviour
         sprite = scriptable.mySprite;
         cam = camera;
         rallyPoint = rally;
+        difficulty = scriptable.difficulty;
     }
 
     private void RallyActivate(Dictionary<System.Enum, object> data)

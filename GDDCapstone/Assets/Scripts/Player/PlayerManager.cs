@@ -26,6 +26,11 @@ public class PlayerManager : MonoBehaviour
     public float radius = 5f;
     private float angle = 0f;
 
+    float minX = -30;
+    float minY = -30;
+    float maxX = 30;
+    float maxY = 30;
+
     public int money;
     /// <summary>
     /// Unity Input Actions
@@ -154,6 +159,8 @@ public class PlayerManager : MonoBehaviour
     {
         Vector2 newPosition;
         newPosition = rb2D.position + direction * moveSpeed * Time.deltaTime;
+        newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
+        newPosition.y = Mathf.Clamp(newPosition.y, minY, maxY);
 
         // Update position
         rb2D.MovePosition(newPosition);

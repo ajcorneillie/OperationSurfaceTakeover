@@ -4,19 +4,46 @@ using UnityEngine;
 
 public class Level1Spawner : MonoBehaviour
 {
+    [SerializeField]
+    GameObject levelManager;
     int index = 0;
+
+    int waveAmount;
 
     [SerializeField]
     GameObject BaseEnemy;
+    [SerializeField]
+    GameObject Enemy2;
+    [SerializeField]
+    GameObject Enemy3;
+    [SerializeField]
+    GameObject Enemy4;
+    [SerializeField]
+    GameObject Enemy5;
+
 
     [SerializeField]
     GameObject theBase;
 
     [SerializeField]
-    Camera camera;
-
+    GameObject node1;
+    [SerializeField]
+    GameObject node2;
+    [SerializeField]
+    GameObject node3;
+    [SerializeField]
+    GameObject node4;
+    [SerializeField]
+    GameObject node5;
     [SerializeField]
     GameObject rallyPoint;
+
+    [SerializeField]
+    Camera camera;
+
+    int xoffset;
+
+    Vector3 spawnTransform;
 
     [SerializeField]
     EnemyScriptable lightArmorBug;
@@ -94,9 +121,14 @@ public class Level1Spawner : MonoBehaviour
     List<Waves> theWave = new List<Waves>();
 
     Timer waveTimer;
+
+    GameEvent levelComplete = new GameEvent();
+    GameEvent wave = new GameEvent();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        int startingwave = 0;
+        waveAmount = levelManager.GetComponent<LevelManager>().waves;
         waveTimer = gameObject.AddComponent<Timer>();
         waveTimer.Duration = 10f;
         waveTimer.Run();
@@ -131,6 +163,13 @@ public class Level1Spawner : MonoBehaviour
         theWave.Add(wave28);
         theWave.Add(wave29);
         theWave.Add(wave30);
+
+        EventManager.AddInvoker(GameplayEvent.LevelComplete, levelComplete);
+        EventManager.AddInvoker(GameplayEvent.Wave, wave);
+
+        wave.AddData(GameplayEventData.Wave, startingwave);
+        wave.AddData(GameplayEventData.MaxWave, waveAmount);
+        wave.Invoke(wave.Data);
     }
 
     // Update is called once per frame
@@ -138,9 +177,13 @@ public class Level1Spawner : MonoBehaviour
     {
         if (waveTimer.Finished)
         {
-            if (index < 30)
+            if (index < waveAmount)
             {
                 Waves currentWave = theWave[index];
+
+                wave.AddData(GameplayEventData.Wave, index + 1);
+                wave.AddData(GameplayEventData.MaxWave, waveAmount);
+                wave.Invoke(wave.Data);
 
                 int lightbugs = currentWave.Amount1;
                 int heavybugs = currentWave.Amount2;
@@ -150,32 +193,51 @@ public class Level1Spawner : MonoBehaviour
 
                 for (int i = 0; i < lightbugs; i++) 
                 {
-                    GameObject Enemy = Instantiate(BaseEnemy, transform.position, Quaternion.identity);
-                    Enemy.GetComponent<Enemy>().Initialize(theBase, lightArmorBug, camera, rallyPoint);
+                    xoffset = Random.Range(-4, 4);
+                    spawnTransform = transform.position;
+                    spawnTransform.x = spawnTransform.x + xoffset;
+                    GameObject Enemy = Instantiate(BaseEnemy, spawnTransform, Quaternion.identity);
+                    Enemy.GetComponent<Enemy>().Initialize(theBase, lightArmorBug, camera, rallyPoint, node1, node2, node3, node4, node5);
                 }
                 for (int i = 0; i < heavybugs; i++)
                 {
-                    GameObject Enemy = Instantiate(BaseEnemy, transform.position, Quaternion.identity);
-                    Enemy.GetComponent<Enemy>().Initialize(theBase, heavyArmorBug, camera, rallyPoint);
+                    xoffset = Random.Range(-10, 10);
+                    spawnTransform = transform.position;
+                    spawnTransform.x = spawnTransform.x + xoffset;
+                    GameObject Enemy = Instantiate(Enemy2, spawnTransform, Quaternion.identity);
+                    Enemy.GetComponent<Enemy>().Initialize(theBase, heavyArmorBug, camera, rallyPoint, node1, node2, node3, node4, node5);
                 }
                 for (int i = 0; i < flyingbugs; i++)
                 {
-                    GameObject Enemy = Instantiate(BaseEnemy, transform.position, Quaternion.identity);
-                    Enemy.GetComponent<Enemy>().Initialize(theBase, flyingArmorBug, camera, rallyPoint);
+                    xoffset = Random.Range(-10, 10);
+                    spawnTransform = transform.position;
+                    spawnTransform.x = spawnTransform.x + xoffset;
+                    GameObject Enemy = Instantiate(Enemy3, spawnTransform, Quaternion.identity);
+                    Enemy.GetComponent<Enemy>().Initialize(theBase, flyingArmorBug, camera, rallyPoint, node1, node2, node3, node4, node5);
                 }
                 for (int i = 0; i < heavyFlyingbugs; i++)
                 {
-                    GameObject Enemy = Instantiate(BaseEnemy, transform.position, Quaternion.identity);
-                    Enemy.GetComponent<Enemy>().Initialize(theBase, flyingHeavyArmorBug, camera, rallyPoint);
+                    xoffset = Random.Range(-10, 10);
+                    spawnTransform = transform.position;
+                    spawnTransform.x = spawnTransform.x + xoffset;
+                    GameObject Enemy = Instantiate(Enemy4, spawnTransform, Quaternion.identity);
+                    Enemy.GetComponent<Enemy>().Initialize(theBase, flyingHeavyArmorBug, camera, rallyPoint, node1, node2, node3, node4, node5);
                 }
                 for (int i = 0; i < invinciblebugs; i++)
                 {
-                    GameObject Enemy = Instantiate(BaseEnemy, transform.position, Quaternion.identity);
-                    Enemy.GetComponent<Enemy>().Initialize(theBase, invincibleArmorBug, camera, rallyPoint);
+                    xoffset = Random.Range(-10, 10);
+                    spawnTransform = transform.position;
+                    spawnTransform.x = spawnTransform.x + xoffset;
+                    GameObject Enemy = Instantiate(Enemy5, spawnTransform, Quaternion.identity);
+                    Enemy.GetComponent<Enemy>().Initialize(theBase, invincibleArmorBug, camera, rallyPoint, node1, node2, node3, node4, node5);
                 }
 
                 index++;
                 waveTimer.Run();
+            }
+            else
+            {
+
             }
 
         }

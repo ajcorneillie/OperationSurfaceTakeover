@@ -7,6 +7,8 @@ using UnityEngine.Rendering;
 public class TurretImage : MonoBehaviour
 {
 
+
+
     private PlayerControls controls;
     private InputAction place;
     private InputAction cancelPlace;
@@ -14,6 +16,7 @@ public class TurretImage : MonoBehaviour
     GameObject structure;
 
     StructureButton structureButtonScript;
+    GameEvent placeTower = new GameEvent();
 
     WallButton wallButtonScript;
 
@@ -42,8 +45,10 @@ public class TurretImage : MonoBehaviour
         place = controls.Player.Place;
         cancelPlace = controls.Player.CancelPlace;
 
+        EventManager.AddListener(GameplayEvent.LevelComplete, LevelComplete);
         EventManager.AddListener(GameplayEvent.PlaceStructure, PlaceStructure);
         EventManager.AddListener(GameplayEvent.CurrentGold, CurrentGold);
+        EventManager.AddInvoker(GameplayEvent.StructureDown, placeTower);
     }
 
     // Update is called once per frame
@@ -72,8 +77,16 @@ public class TurretImage : MonoBehaviour
         data.TryGetValue(GameplayEventData.Tile, out output);
         GameObject tile = (GameObject)output;
 
+        placeTower.AddData(GameplayEventData.Tile, tile);
+        placeTower.Invoke(placeTower.Data);
+
         var theStructure = Instantiate(structure, location, Quaternion.identity);
         theStructure.GetComponent<Turret>().Initialize(structureButtonScript, tile);
+    }
+
+    private void LevelComplete(Dictionary<System.Enum, object> data)
+    {
+        Destroy(gameObject);
     }
 
     private void CurrentGold(Dictionary<System.Enum, object> data)

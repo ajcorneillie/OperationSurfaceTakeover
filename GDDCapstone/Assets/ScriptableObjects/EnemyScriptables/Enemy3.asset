@@ -17,3 +17,6 @@ MonoBehaviour:
   MoveSpeed: 5
   Damage: 5
   TargetStructures: 0
+  isFlying: 0
+  mySprite: {fileID: 0}
+  difficulty: 1

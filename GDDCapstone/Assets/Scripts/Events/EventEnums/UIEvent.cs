@@ -8,6 +8,8 @@ public enum UIEvent
     StructurePurchaseAttemptToPlayerWall,
     LivesUpdate,
     MoneyUpdate,
+    LevelSelect,
+    Start,
 
 }
 
@@ -20,6 +22,9 @@ public enum UIEventData
     WallScriptable,
     Lives,
     Money,
-
+    LevelSelected,
+    LevelNum,
+    level,
+    stars,
 
 }

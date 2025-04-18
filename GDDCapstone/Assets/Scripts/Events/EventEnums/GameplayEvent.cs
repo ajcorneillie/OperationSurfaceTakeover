@@ -14,6 +14,12 @@ public enum GameplayEvent
     NodeHit,
     WaitingRally,
     RallyActivate,
+    LevelComplete,
+    Win,
+    Wave,
+    StructureDown,
+    EnemySpawn,
+    EnemyDeath,
 
 }
 
@@ -29,6 +35,10 @@ public enum GameplayEventData
     TilePos,
     Cost,
     Node,
-
+    level,
+    Health,
+    Stars,
+    Wave,
+    MaxWave,
 
 }

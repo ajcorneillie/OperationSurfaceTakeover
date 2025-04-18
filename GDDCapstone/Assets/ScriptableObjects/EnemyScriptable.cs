@@ -10,4 +10,5 @@ public class EnemyScriptable : ScriptableObject
     public bool TargetStructures;
     public bool isFlying;
     public Sprite mySprite;
+    public int difficulty;
 }

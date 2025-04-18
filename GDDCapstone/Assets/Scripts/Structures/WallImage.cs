@@ -13,6 +13,7 @@ public class WallImage : MonoBehaviour
 
     GameObject structure;
 
+    GameEvent placeTower = new GameEvent();
     WallButton structureButtonScript;
 
     /// <summary>
@@ -39,8 +40,10 @@ public class WallImage : MonoBehaviour
         controls = new PlayerControls();
         place = controls.Player.Place;
         cancelPlace = controls.Player.CancelPlace;
+        EventManager.AddListener(GameplayEvent.LevelComplete, LevelComplete);
         EventManager.AddListener(GameplayEvent.PlaceStructure, PlaceStructure);
         EventManager.AddListener(GameplayEvent.CurrentGold, CurrentGold);
+        EventManager.AddInvoker(GameplayEvent.StructureDown, placeTower);
     }
 
     // Update is called once per frame
@@ -69,6 +72,9 @@ public class WallImage : MonoBehaviour
         data.TryGetValue(GameplayEventData.Tile, out  output);
         GameObject tile = (GameObject)output;
 
+        placeTower.AddData(GameplayEventData.Tile, tile);
+        placeTower.Invoke(placeTower.Data);
+
         var theStructure = Instantiate(structure, location, Quaternion.identity);
         theStructure.GetComponent<Wall>().Initialize(structureButtonScript, tile);
     }
@@ -86,6 +92,11 @@ public class WallImage : MonoBehaviour
             Destroy(gameObject);
         }
 
+    }
+
+    private void LevelComplete(Dictionary<System.Enum, object> data)
+    {
+        Destroy(gameObject);
     }
 
 }

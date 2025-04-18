@@ -13,6 +13,9 @@ public class EnemyPathingManager : MonoBehaviour
     [SerializeField]
     public GameObject node5;
 
+    [SerializeField]
+    public GameObject RallyPoint;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

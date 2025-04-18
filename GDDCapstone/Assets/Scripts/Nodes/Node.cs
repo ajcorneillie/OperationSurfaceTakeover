@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine.Assertions.Must;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
+
 
 public class Node : MonoBehaviour
 {
@@ -20,6 +22,7 @@ public class Node : MonoBehaviour
     {
         highlight.SetActive(false);
         EventManager.AddInvoker(GameplayEvent.PlaceStructure, placeStructure);
+        EventManager.AddListener(GameplayEvent.StructureDown, StructureDown);
     }
     public void Initialize(bool isfloorTile)
     {
@@ -40,7 +43,6 @@ public class Node : MonoBehaviour
             placeStructure.AddData(GameplayEventData.TilePos, transform.position);
             placeStructure.AddData(GameplayEventData.Tile, gameObject);
             placeStructure.Invoke(placeStructure.Data);
-            isEmpty = false;
 
         }
 
@@ -70,5 +72,16 @@ public class Node : MonoBehaviour
     public void ResetMe()
     {
         isEmpty = true;
+    }
+
+    void StructureDown(Dictionary<System.Enum, object> data)
+    {
+        data.TryGetValue(GameplayEventData.Tile, out object output);
+        GameObject tile = (GameObject)output;
+
+        if (tile == gameObject)
+        {
+            isEmpty = false;
+        }
     }
 }

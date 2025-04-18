@@ -13,7 +13,11 @@ public class UIManager : MonoBehaviour
     TextMeshProUGUI moneyText;
     [SerializeField]
     TextMeshProUGUI healthText;
+    [SerializeField]
+    TextMeshProUGUI waveText;
 
+    [SerializeField]
+    GameObject pauseMenu;
 
     [SerializeField]
     StructureButton turret;
@@ -44,6 +48,8 @@ public class UIManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        pauseMenu = Instantiate(pauseMenu);
+
         moneyText.text = $"Uranium: {0}";
         healthText.text = $"Lives: {10}";
 
@@ -52,6 +58,7 @@ public class UIManager : MonoBehaviour
         EventManager.AddListener(UIEvent.LivesUpdate, UpdateLives);
         EventManager.AddListener(GameplayEvent.GoldSpent, MoneySpent);
         EventManager.AddListener(GameplayEvent.GoldDropoff, UpdateMoney);
+        EventManager.AddListener(GameplayEvent.Wave, WaveUpdate);
         EventManager.AddInvoker(UIEvent.StructurePurchaseSuccess, purchaseSuccess);
         EventManager.AddInvoker(UIEvent.StructurePurchaseFailure, purchaseFailure);
 
@@ -104,7 +111,10 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 1)
+        {
+            PauseClicked();
+        }
     }
 
     void PurchaseEvent(Dictionary<System.Enum, object> data)
@@ -168,6 +178,35 @@ public class UIManager : MonoBehaviour
         money = money - moneySpent;
 
         moneyText.text = $"Uranium: {money}";
+    }
+
+    void WaveUpdate(Dictionary<System.Enum, object> data)
+    {
+        data.TryGetValue(GameplayEventData.MaxWave, out object output);
+        int maxwave = (int)output;
+        data.TryGetValue(GameplayEventData.Wave, out output);
+        int wave = (int)output;
+
+
+        if (wave < 10 && maxwave < 10)
+        {
+            waveText.text = $"Waves: 0{wave} / 0{maxwave}";
+        }
+        else if (wave < 10 && maxwave >= 10)
+        {
+            waveText.text = $"Waves: 0{wave} / {maxwave}";
+        }
+        else
+        {
+            waveText.text = $"Waves: {wave} / {maxwave}";
+        }
+
+    }
+
+    public void PauseClicked()
+    {
+        pauseMenu.SetActive(true);
+        Time.timeScale = 0;
     }
 
 }

@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using static UnityEngine.GraphicsBuffer;
 
 public class Miner : MonoBehaviour
@@ -35,11 +36,17 @@ public class Miner : MonoBehaviour
             if (isFull == false && Mine != null)
             {
                 transform.position = Vector3.MoveTowards(transform.position, Mine.transform.position, moveSpeed * Time.deltaTime);
+                Vector2 direction = (Mine.transform.position - transform.position).normalized;
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Euler(0, 0, angle);
             }
 
             if (isFull == true && Base != null)
             {
                 transform.position = Vector3.MoveTowards(transform.position, Base.transform.position, moveSpeed * Time.deltaTime);
+                Vector2 direction = (Base.transform.position - transform.position).normalized;
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Euler(0, 0, angle);
             }
         }
 
