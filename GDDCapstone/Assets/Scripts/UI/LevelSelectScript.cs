@@ -57,6 +57,10 @@ public class LevelSelectScript : MonoBehaviour
         {
             gameObject.GetComponent<Image>().sprite = uncomplete;
         }
+        else if (levelKey == "Level1")
+        {
+            gameObject.GetComponent<Image>().sprite = uncomplete;
+        }
         else
         {
             gameObject.GetComponent<Image>().sprite = notReady;

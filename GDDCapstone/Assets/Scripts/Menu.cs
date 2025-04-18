@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,6 +10,7 @@ public class Menu : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Debug.Log("Save path: " + Application.persistentDataPath);
         settingsMenu.GetComponent<Settings>().StartMe(gameObject);
         settingsMenu.GetComponent<VolumeSettings>().StartMe();
     }

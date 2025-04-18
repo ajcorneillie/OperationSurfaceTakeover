@@ -193,41 +193,31 @@ public class Level1Spawner : MonoBehaviour
 
                 for (int i = 0; i < lightbugs; i++) 
                 {
-                    xoffset = Random.Range(-4, 4);
                     spawnTransform = transform.position;
-                    spawnTransform.x = spawnTransform.x + xoffset;
                     GameObject Enemy = Instantiate(BaseEnemy, spawnTransform, Quaternion.identity);
                     Enemy.GetComponent<Enemy>().Initialize(theBase, lightArmorBug, camera, rallyPoint, node1, node2, node3, node4, node5);
                 }
                 for (int i = 0; i < heavybugs; i++)
                 {
-                    xoffset = Random.Range(-10, 10);
                     spawnTransform = transform.position;
-                    spawnTransform.x = spawnTransform.x + xoffset;
                     GameObject Enemy = Instantiate(Enemy2, spawnTransform, Quaternion.identity);
                     Enemy.GetComponent<Enemy>().Initialize(theBase, heavyArmorBug, camera, rallyPoint, node1, node2, node3, node4, node5);
                 }
                 for (int i = 0; i < flyingbugs; i++)
                 {
-                    xoffset = Random.Range(-10, 10);
                     spawnTransform = transform.position;
-                    spawnTransform.x = spawnTransform.x + xoffset;
                     GameObject Enemy = Instantiate(Enemy3, spawnTransform, Quaternion.identity);
                     Enemy.GetComponent<Enemy>().Initialize(theBase, flyingArmorBug, camera, rallyPoint, node1, node2, node3, node4, node5);
                 }
                 for (int i = 0; i < heavyFlyingbugs; i++)
                 {
-                    xoffset = Random.Range(-10, 10);
                     spawnTransform = transform.position;
-                    spawnTransform.x = spawnTransform.x + xoffset;
                     GameObject Enemy = Instantiate(Enemy4, spawnTransform, Quaternion.identity);
                     Enemy.GetComponent<Enemy>().Initialize(theBase, flyingHeavyArmorBug, camera, rallyPoint, node1, node2, node3, node4, node5);
                 }
                 for (int i = 0; i < invinciblebugs; i++)
                 {
-                    xoffset = Random.Range(-10, 10);
                     spawnTransform = transform.position;
-                    spawnTransform.x = spawnTransform.x + xoffset;
                     GameObject Enemy = Instantiate(Enemy5, spawnTransform, Quaternion.identity);
                     Enemy.GetComponent<Enemy>().Initialize(theBase, invincibleArmorBug, camera, rallyPoint, node1, node2, node3, node4, node5);
                 }

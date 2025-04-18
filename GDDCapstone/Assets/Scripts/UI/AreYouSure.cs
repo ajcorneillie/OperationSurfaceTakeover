@@ -30,7 +30,7 @@ public class AreYouSure : MonoBehaviour
 
     public void YesMainClicked()
     {
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("Menu");
     }
     public void YesLevelClicked()
     {
