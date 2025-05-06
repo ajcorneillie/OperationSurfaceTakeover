@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: f427d48ab9ec0854dbba110c3f58e79e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - attackAudio: {fileID: 8300000, guid: 18e71960feb0626458582706d2f69134, type: 3}
+  - collidedObject: {instanceID: 0}
+  - node1: {instanceID: 0}
+  - node2: {instanceID: 0}
+  - node3: {instanceID: 0}
+  - node4: {instanceID: 0}
+  - node5: {instanceID: 0}
+  - newnode1: {instanceID: 0}
+  - newnode2: {instanceID: 0}
+  - newnode3: {instanceID: 0}
+  - newnode4: {instanceID: 0}
+  - newnode5: {instanceID: 0}
+  - rallyPoint: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
